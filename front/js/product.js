@@ -76,8 +76,12 @@ fetch("http://localhost:3000/api/products")
           let newQuant = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
           console.log(newQuant);
           alert("vous avez ajouté " + itemChoosenJson.quantité + "canapé(s) supplementaire de l'id : " + itemChoosenJson.num);
-          /* Il faut ici envoyer la nouvelle valeur contenu dans obj.quantité au localStorage dans le "existingBasket" dans l'objet canapé correespondant (obj.num = itemNum ?) et remplacer obj.Quantité */
-         /* PLUS OU MOINS CA existingBasket[obj].quantité = newQuant;*/
+
+          obj.quantité = newQuant;
+          console.log("Il y a maintenant " + obj.quantité + " canapés dans votre panier");
+          
+           /* Il faut ici envoyer la nouvelle valeur contenu dans obj.quantité dans existingBasket avant de l'envoyer au localStorage dans allBAsket */
+          
           localStorage.setItem("allBasket", JSON.stringify(existingBasket));
         }
       }
@@ -100,14 +104,3 @@ fetch("http://localhost:3000/api/products")
   .catch(function(err) {
     console.log("failed to load the API");
   });  
-
-
-  /*
- 
-  color = document.createElement("option");
-      document.getElementById("colors").add(color);
-      color.setAttribute("value", value[id].colors);
-      color.innerText = value[id].colors;
-
-
-  */

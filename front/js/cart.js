@@ -19,7 +19,6 @@ fetch("http://localhost:3000/api/products")
         let itemNum = item.num;
         let itemCouleur = item.couleur;
         let itemQuantité = item.quantité;
-        console.log(itemNum + itemCouleur + itemQuantité);
     
         article = document.createElement("article");
         document.getElementById("cart__items").appendChild(article);
@@ -72,7 +71,7 @@ fetch("http://localhost:3000/api/products")
 
         p_quantité = document.createElement("p");
         divcontent__settings__quantity.appendChild(p_quantité);
-        p_quantité.innerText = "quantité : ";
+        p_quantité.innerText = "Qté : ";
 
         input_quantity = document.createElement("input");
         divcontent__settings__quantity.appendChild(input_quantity);
@@ -84,15 +83,37 @@ fetch("http://localhost:3000/api/products")
         input_quantity.setAttribute("value", itemQuantité);
 
         divcontent__settings__delete = document.createElement("div");
-        divcontent__settings__quantity.appendChild(divcontent__settings__delete);
+        divcontent__settings.appendChild(divcontent__settings__delete);
         divcontent__settings__delete.setAttribute("class", "cart__item__content__settings__delete");
         divcontent__settings__delete.setAttribute("id", "cart__item__content__settings__delete");
 
         p_delete = document.createElement("p");
         divcontent__settings__delete.appendChild(p_delete);
         p_delete.setAttribute("class", "deleteItem");
+        p_delete.setAttribute("id", "deleteItem");
         p_delete.innerText = "Supprimer";
+        
     }
+    /* Supprime l'article sur lequel on click 'suppr' */
+    function suppr() {
+      let deleteButton = document.getElementById("deleteItem");
+      let deletedItem = deleteButton.closest("article");
+      
+      let caca = deletedItem.dataset.id;
+      let pipi = deletedItem.dataset.color;
+      console.log(caca + pipi);
+
+      /* localStorage.removeItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
+
+      document.getElementById("cart__items").removeChild(deletedItem);
+    };
+
+    /* selectionne tout les boutons 'suppr' et ecoute leurs clicks */
+    let deletedArticle = document.querySelectorAll("p.deleteItem");
+    deletedArticle.forEach(addEventListener("click", function() {
+      suppr();
+    }))
+ 
   })
 
   .catch(function(err) {
