@@ -26,6 +26,7 @@ fetch("http://localhost:3000/api/products")
         article.setAttribute("id", "cart__item");
         article.setAttribute("data-id", itemNum);
         article.setAttribute("data-color", itemCouleur);
+        article.innerText = itemNum;
     
         divImg = document.createElement("div");
         article.appendChild(divImg);
@@ -92,28 +93,29 @@ fetch("http://localhost:3000/api/products")
         p_delete.setAttribute("class", "deleteItem");
         p_delete.setAttribute("id", "deleteItem");
         p_delete.innerText = "Supprimer";
-        
-    }
-    /* Supprime l'article sur lequel on click 'suppr' */
-    function suppr() {
-      let deleteButton = document.getElementById("deleteItem");
-      let deletedItem = deleteButton.closest("article");
+
+        p_delete.addEventListener("click", function() {
+          suppr();
+        })
+     
+        /* Supprime l'article sur lequel on click 'suppr' */
+        function suppr() {
+
+          console.log(itemNum);
       
-      let caca = deletedItem.dataset.id;
-      let pipi = deletedItem.dataset.color;
-      console.log(caca + pipi);
+          let deletedItem = document.querySelector("[data-id=" + CSS.escape(itemNum) + "][data-color=" + CSS.escape(itemCouleur) + "]");
 
-      /* localStorage.removeItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
+          let deletedId = deletedItem.dataset.id;
+          let deletedColor = deletedItem.dataset.color;
+          console.log(deletedId + deletedColor);
 
-      document.getElementById("cart__items").removeChild(deletedItem);
-    };
+          /* localStorage.removeItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
 
-    /* selectionne tout les boutons 'suppr' et ecoute leurs clicks */
-    let deletedArticle = document.querySelectorAll("p.deleteItem");
-    deletedArticle.forEach(addEventListener("click", function() {
-      suppr();
-    }))
- 
+          document.getElementById("cart__items").removeChild(deletedItem);
+        };
+
+    }
+
   })
 
   .catch(function(err) {
