@@ -1,4 +1,4 @@
-let vraifo = '';
+let newItem = '';
 const completeUrl = location;
 var url = new URL(completeUrl);
 var search_params = new URLSearchParams(url.search); 
@@ -72,7 +72,7 @@ fetch("http://localhost:3000/api/products")
         
         if(obj.couleur == itemChoosenJson.couleur && obj.num == itemChoosenJson.num) {
 
-          vraifo = true;
+          newItem = true;
           let newQuant = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
           console.log(newQuant);
           alert("vous avez ajouté " + itemChoosenJson.quantité + "canapé(s) supplementaire de l'id : " + itemChoosenJson.num);
@@ -85,22 +85,18 @@ fetch("http://localhost:3000/api/products")
           localStorage.setItem("allBasket", JSON.stringify(existingBasket));
         }
       }
-      console.log(vraifo);
-      if (vraifo !== true) {
+      console.log(newItem);
+      if (newItem !== true) {
         existingBasket.push(itemChoosen);
         alert("bonjour vous avez ajouté ceci: canapé numero " + itemChoosenJson.num + " en " + itemChoosenJson.couleur + " et vous en voulez " + itemChoosenJson.quantité);
         localStorage.setItem("allBasket", JSON.stringify(existingBasket));
       }
-
     }
-
     /*On appelle la fonction quand button est click*/
     document.getElementById("addToCart").addEventListener("click", function() {
       storeChoice(id);
     })
-    
   })
-
   .catch(function(err) {
     console.log("failed to load the API");
   });  

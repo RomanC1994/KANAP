@@ -109,7 +109,7 @@ fetch("http://localhost:3000/api/products")
           let deletedColor = deletedItem.dataset.color;
           console.log(deletedId + deletedColor);
 
-          /* localStorage.removeItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
+          localStorage.getItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
 
           document.getElementById("cart__items").removeChild(deletedItem);
         };
