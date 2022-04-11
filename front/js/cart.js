@@ -82,6 +82,9 @@ fetch("http://localhost:3000/api/products")
         input_quantity.setAttribute("min", "1");
         input_quantity.setAttribute("max", "100");
         input_quantity.setAttribute("value", itemQuantité);
+        input_quantity.addEventListener("focusout", function() {
+          changeQuantity();
+        });
 
         divcontent__settings__delete = document.createElement("div");
         divcontent__settings.appendChild(divcontent__settings__delete);
@@ -93,7 +96,6 @@ fetch("http://localhost:3000/api/products")
         p_delete.setAttribute("class", "deleteItem");
         p_delete.setAttribute("id", "deleteItem");
         p_delete.innerText = "Supprimer";
-
         p_delete.addEventListener("click", function() {
           suppr();
         })
@@ -109,15 +111,23 @@ fetch("http://localhost:3000/api/products")
           let deletedColor = deletedItem.dataset.color;
           console.log(deletedId + deletedColor);
 
-          localStorage.getItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
+          /* localStorage.deleteItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
 
           document.getElementById("cart__items").removeChild(deletedItem);
         };
 
+        /* Recupere la quantité ajoutée par l'user pour la renvoyer au local storage*/
+        function changeQuantity() {
+          let quantityParent = document.querySelector("[data-id=" + CSS.escape(itemNum) + "][data-color=" + CSS.escape(itemCouleur) + "]");
+          let choosenQuantity = quantityParent.querySelector("input");
+          console.log(choosenQuantity.value);
+          
+          item.quantité = choosenQuantity.value;
+          /* Trouver comment envoyer la nouvelle quantité dans le localStorage */
+          localStorage.setItem("allBasket", JSON.stringify(allBasketJson));
+        };
     }
-
   })
-
   .catch(function(err) {
     console.log("failed to load the API");
   });  
