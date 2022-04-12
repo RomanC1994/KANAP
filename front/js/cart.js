@@ -1,6 +1,6 @@
 const allBasket = localStorage.getItem("allBasket");
 const allBasketJson = JSON.parse(allBasket);
-console.log(allBasketJson);
+let totalPrice = '0';
 
 /* On appelle l'API */
 fetch("http://localhost:3000/api/products")
@@ -26,7 +26,6 @@ fetch("http://localhost:3000/api/products")
         article.setAttribute("id", "cart__item");
         article.setAttribute("data-id", itemNum);
         article.setAttribute("data-color", itemCouleur);
-        article.innerText = itemNum;
     
         divImg = document.createElement("div");
         article.appendChild(divImg);
@@ -59,6 +58,8 @@ fetch("http://localhost:3000/api/products")
         p_price = document.createElement("p");
         divcontent__description.appendChild(p_price);
         p_price.innerText = value[itemNum].price + " €";
+        resultPrice = parseInt(totalPrice) + parseInt(value[itemNum].price);
+        totalPrice = parseInt(resultPrice);
 
         divcontent__settings = document.createElement("div");
         divContent.appendChild(divcontent__settings);
@@ -127,8 +128,99 @@ fetch("http://localhost:3000/api/products")
           localStorage.setItem("allBasket", JSON.stringify(allBasketJson));
         };
     }
+    
+    let allItems = allBasketJson.length;
+    let basketCount = document.getElementById("totalQuantity");
+    basketCount.innerText = allItems;
+
+    let totalPrix = document.getElementById("totalPrice");
+    totalPrix.innerText = totalPrice;
+
   })
   .catch(function(err) {
     console.log("failed to load the API");
   });  
+
+  /* Form */
+
+  let truePrenom = "";
+  let trueNom = "";
+  let trueAddress = "";
+  let trueCity = "";
+  let trueEmail = "";
+
+  let prenom = document.getElementById("firstName");
+  prenom.addEventListener("input", function(inputText) {
+    console.log(inputText.target.value);
+    if (/^\D\S*$/.test(inputText.target.value)) {
+      document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré est valide";
+      truePrenom = "true";
+    }
+    else {
+      trueEmail = "false";
+      document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré n'est pas valide";
+    };
+  });
+
+  let nom = document.getElementById("lastName");
+  nom.addEventListener("input", function(inputText) {
+    console.log(inputText.target.value);
+    if (/^\D\S*$/.test(inputText.target.value)) {
+      document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré est valide";
+      trueNom = "true";
+    }
+    else {
+      trueEmail = "false";
+      document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré n'est pas valide";
+    };
+  });
+
+  let address = document.getElementById("address");
+  address.addEventListener("input", function(inputText) {
+    console.log(inputText.target.value);
+    if (/^\w/.test(inputText.target.value)) {
+      document.getElementById("addressErrorMsg").innerHTML = "L'adresse inserée est valide";
+      trueAddress = "true";
+    }
+    else {
+      trueEmail = "false";
+      document.getElementById("addressErrorMsg").innerHTML = "L'adresse inserée n'est pas valide";
+    };
+  });
+
+  let city = document.getElementById("city");
+  city.addEventListener("input", function(inputText) {
+    console.log(inputText.target.value);
+    if (/^\D\S*$/.test(inputText.target.value)) {
+      document.getElementById("cityErrorMsg").innerHTML = "La ville inserée est valide";
+      trueCity = "true";
+    }
+    else {
+      trueEmail = "false";
+      document.getElementById("cityErrorMsg").innerHTML = "La ville inserée n'est pas valide";
+    };
+  });
+
+  let email = document.getElementById("email");
+  email.addEventListener("input", function(inputText) {
+    console.log(inputText.target.value);
+    if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(inputText.target.value)) {
+      document.getElementById("emailErrorMsg").innerHTML = "Le mail inseré est valide";
+      trueEmail = "true";
+    }
+    else {
+      trueEmail = "false";
+      document.getElementById("emailErrorMsg").innerHTML = "Le mail inseré n'est pas valide";
+    };
+  });
+
+  document.querySelector(".cart__order__form__submit").addEventListener("click", function(u) {
+    u.preventDefault();
+    if (truePrenom === "true" && trueNom === "true" && trueAddress === "true" && trueCity === "true" && trueEmail === "true") {
+      console.log("FORMULAIRE ENVOYé");
+      /* dans ce cas poster */
+    }
+  });
+
+  
 
