@@ -68,29 +68,31 @@ fetch("http://localhost:3000/api/products")
       localStorage.setItem("lastBuy", itemChoosen);
 
       for (let objs of existingBasket) {
-        let obj = JSON.parse(objs);
-        
+        obj = JSON.parse(objs);
+
         if(obj.couleur == itemChoosenJson.couleur && obj.num == itemChoosenJson.num) {
 
+          obj.quantité = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
+         
+          existingBasket[0] = JSON.stringify(obj);
           newItem = true;
-          let newQuant = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
+         /* let newQuant = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
           console.log(newQuant);
           alert("vous avez ajouté " + itemChoosenJson.quantité + "canapé(s) supplementaire de l'id : " + itemChoosenJson.num);
-
-          obj.quantité = newQuant;
-          console.log("Il y a maintenant " + obj.quantité + " canapés dans votre panier");
+          existingBasket[obj.quantité] = newQuant;
+          console.log("Il y a maintenant " + existingBasket[obj.quantité] + " canapés dans votre panier"); */
           
-           /* Il faut ici envoyer la nouvelle valeur contenu dans obj.quantité dans existingBasket avant de l'envoyer au localStorage dans allBAsket */
+          /* Il faut ici envoyer la nouvelle valeur contenu dans obj.quantité dans existingBasket avant de l'envoyer au localStorage dans allBAsket */
           
           localStorage.setItem("allBasket", JSON.stringify(existingBasket));
         }
       }
-      console.log(newItem);
       if (newItem !== true) {
         existingBasket.push(itemChoosen);
         alert("bonjour vous avez ajouté ceci: canapé numero " + itemChoosenJson.num + " en " + itemChoosenJson.couleur + " et vous en voulez " + itemChoosenJson.quantité);
         localStorage.setItem("allBasket", JSON.stringify(existingBasket));
       }
+     
     }
     /*On appelle la fonction quand button est click*/
     document.getElementById("addToCart").addEventListener("click", function() {
