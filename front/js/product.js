@@ -67,26 +67,22 @@ fetch("http://localhost:3000/api/products")
       const itemChoosen = JSON.stringify(itemChoosenJson);
       localStorage.setItem("lastBuy", itemChoosen);
 
-      for (let objs of existingBasket) {
+      /* On parcourt le tableau et pour verifier si l'objet a ajouter au panier eciste deja dans celui ci ou doit etre creer */
+
+      existingBasket.forEach(function (objs, i) {
         obj = JSON.parse(objs);
 
         if(obj.couleur == itemChoosenJson.couleur && obj.num == itemChoosenJson.num) {
 
           obj.quantité = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
          
-          existingBasket[0] = JSON.stringify(obj);
+          existingBasket[i] = JSON.stringify(obj);
           newItem = true;
-         /* let newQuant = JSON.parse(obj.quantité) + JSON.parse(itemChoosenJson.quantité);
-          console.log(newQuant);
           alert("vous avez ajouté " + itemChoosenJson.quantité + "canapé(s) supplementaire de l'id : " + itemChoosenJson.num);
-          existingBasket[obj.quantité] = newQuant;
-          console.log("Il y a maintenant " + existingBasket[obj.quantité] + " canapés dans votre panier"); */
-          
-          /* Il faut ici envoyer la nouvelle valeur contenu dans obj.quantité dans existingBasket avant de l'envoyer au localStorage dans allBAsket */
-          
+          console.log("Il y a maintenant " + existingBasket[obj.quantité] + " canapés dans votre panier"); 
           localStorage.setItem("allBasket", JSON.stringify(existingBasket));
         }
-      }
+      });
       if (newItem !== true) {
         existingBasket.push(itemChoosen);
         alert("bonjour vous avez ajouté ceci: canapé numero " + itemChoosenJson.num + " en " + itemChoosenJson.couleur + " et vous en voulez " + itemChoosenJson.quantité);

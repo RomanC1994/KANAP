@@ -14,7 +14,7 @@ fetch("http://localhost:3000/api/products")
   .then(function(value) {
     console.log("API successfully loaded");
 
-    for (let items of allBasketJson) {
+    allBasketJson.forEach(function (items, i) {
         let item = JSON.parse(items);
         let itemNum = item.num;
         let itemCouleur = item.couleur;
@@ -103,7 +103,6 @@ fetch("http://localhost:3000/api/products")
      
         /* Supprime l'article sur lequel on click 'suppr' */
         function suppr() {
-
           console.log(itemNum);
       
           let deletedItem = document.querySelector("[data-id=" + CSS.escape(itemNum) + "][data-color=" + CSS.escape(itemCouleur) + "]");
@@ -111,23 +110,21 @@ fetch("http://localhost:3000/api/products")
           let deletedId = deletedItem.dataset.id;
           let deletedColor = deletedItem.dataset.color;
           console.log(deletedId + deletedColor);
-
-          /* localStorage.deleteItem("allBasket"); /*Ne pas supprimer tout le Panier mais juste l'item selectionné */
-
+          allBasketJson.splice(i, 1);
           document.getElementById("cart__items").removeChild(deletedItem);
+          localStorage.setItem("allBasket", JSON.stringify(allBasketJson));
         };
 
         /* Recupere la quantité ajoutée par l'user pour la renvoyer au local storage*/
         function changeQuantity() {
           let quantityParent = document.querySelector("[data-id=" + CSS.escape(itemNum) + "][data-color=" + CSS.escape(itemCouleur) + "]");
           let choosenQuantity = quantityParent.querySelector("input");
-          console.log(choosenQuantity.value);
-          
-          item.quantité = choosenQuantity.value;
-          /* Trouver comment envoyer la nouvelle quantité dans le localStorage */
+          console.log(JSON.parse(choosenQuantity.value));
+          item.quantité = JSON.parse(choosenQuantity.value);
+          allBasketJson[i] = JSON.stringify(item);
           localStorage.setItem("allBasket", JSON.stringify(allBasketJson));
         };
-    }
+    });
     
     let allItems = allBasketJson.length;
     let basketCount = document.getElementById("totalQuantity");
@@ -157,7 +154,7 @@ fetch("http://localhost:3000/api/products")
       truePrenom = "true";
     }
     else {
-      trueEmail = "false";
+      truePrenom = "false";
       document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré n'est pas valide";
     };
   });
@@ -170,7 +167,7 @@ fetch("http://localhost:3000/api/products")
       trueNom = "true";
     }
     else {
-      trueEmail = "false";
+      trueNom = "false";
       document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré n'est pas valide";
     };
   });
@@ -183,7 +180,7 @@ fetch("http://localhost:3000/api/products")
       trueAddress = "true";
     }
     else {
-      trueEmail = "false";
+      trueAddress = "false";
       document.getElementById("addressErrorMsg").innerHTML = "L'adresse inserée n'est pas valide";
     };
   });
@@ -196,7 +193,7 @@ fetch("http://localhost:3000/api/products")
       trueCity = "true";
     }
     else {
-      trueEmail = "false";
+      trueCity = "false";
       document.getElementById("cityErrorMsg").innerHTML = "La ville inserée n'est pas valide";
     };
   });
