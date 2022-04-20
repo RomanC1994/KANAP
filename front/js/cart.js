@@ -3,7 +3,7 @@ const allBasketJson = JSON.parse(allBasket);
 let totalPrice = '0';
 
 /* On appelle l'API */
-fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products") 
 
   .then(function(productsArray) {
     if (productsArray.ok) {
@@ -146,8 +146,8 @@ fetch("http://localhost:3000/api/products")
   let trueCity = "";
   let trueEmail = "";
 
-  let prenom = document.getElementById("firstName");
-  prenom.addEventListener("input", function(inputText) {
+  let firstName = document.getElementById("firstName");
+  firstName.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
     if (/^\D\S*$/.test(inputText.target.value)) {
       document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré est valide";
@@ -158,9 +158,8 @@ fetch("http://localhost:3000/api/products")
       document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré n'est pas valide";
     };
   });
-
-  let nom = document.getElementById("lastName");
-  nom.addEventListener("input", function(inputText) {
+  let lastName = document.getElementById("lastName");
+  lastName.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
     if (/^\D\S*$/.test(inputText.target.value)) {
       document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré est valide";
@@ -171,7 +170,6 @@ fetch("http://localhost:3000/api/products")
       document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré n'est pas valide";
     };
   });
-
   let address = document.getElementById("address");
   address.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
@@ -184,7 +182,6 @@ fetch("http://localhost:3000/api/products")
       document.getElementById("addressErrorMsg").innerHTML = "L'adresse inserée n'est pas valide";
     };
   });
-
   let city = document.getElementById("city");
   city.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
@@ -197,7 +194,6 @@ fetch("http://localhost:3000/api/products")
       document.getElementById("cityErrorMsg").innerHTML = "La ville inserée n'est pas valide";
     };
   });
-
   let email = document.getElementById("email");
   email.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
@@ -208,7 +204,7 @@ fetch("http://localhost:3000/api/products")
     else {
       trueEmail = "false";
       document.getElementById("emailErrorMsg").innerHTML = "Le mail inseré n'est pas valide";
-    };
+    }; 
   });
 
   document.querySelector(".cart__order__form__submit").addEventListener("click", function(u) {
@@ -216,8 +212,50 @@ fetch("http://localhost:3000/api/products")
     if (truePrenom === "true" && trueNom === "true" && trueAddress === "true" && trueCity === "true" && trueEmail === "true") {
       console.log("FORMULAIRE ENVOYé");
       /* dans ce cas poster */
+      let inputName = document.getElementById('firstName');
+      let inputLastName = document.getElementById('lastName');
+      let inputAdress = document.getElementById('address');
+      let inputCity = document.getElementById('city');
+      let inputMail = document.getElementById('email');
+
+      //Construction d'un array depuis le local storage
+      let idProducts = [];
+      for (let i = 0; i<allBasketJson.length;i++) {
+          idProducts.push(allBasketJson[i].itemNum);
+      }
+      console.log(idProducts);
+
+      const order = {
+          contact : {
+              firstName: inputName.value,
+              lastName: inputLastName.value,
+              address: inputAdress.value,
+              city: inputCity.value,
+              email: inputMail.value,
+          },
+          products: idProducts,
+      } 
+
+      const options = {
+          method: 'POST',
+          body: JSON.stringify(order),
+          headers: {
+              'Accept': 'application/json', 
+              "Content-Type": "application/json" 
+          },
+      };
+
+      fetch("http://localhost:3000/api/products/order", options)
+      .then((response) => response.json())
+      .then((data) => {
+          console.log(data);
+          
+          localStorage.setItem("orderId", "154885856135835538355");
+
+          document.location.href = "confirmation.html";
+      })
+      .catch((err) => {
+          alert ("Problème avec fetch : " + err.message);
+      });
     }
   });
-
-  
-
