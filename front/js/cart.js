@@ -14,6 +14,8 @@ fetch("http://localhost:3000/api/products")
   .then(function(value) {
     console.log("API successfully loaded");
 
+    /* Pour chaque objet dans le panier, on crée un "article produit" complet */
+
     allBasketJson.forEach(function (items, i) {
         let item = JSON.parse(items);
         let itemNum = item.num;
@@ -147,6 +149,9 @@ fetch("http://localhost:3000/api/products")
   let trueEmail = "";
 
   let firstName = document.getElementById("firstName");
+
+  /* On verifie que le contenu de chaque input est validé par des regexs respectives pour chacun des champs*/
+
   firstName.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
     if (/^\D\S*$/.test(inputText.target.value)) {
@@ -207,18 +212,20 @@ fetch("http://localhost:3000/api/products")
     }; 
   });
 
+  /* Si chaque champ est validé, dans ce cas poster */
+
   document.querySelector(".cart__order__form__submit").addEventListener("click", function(u) {
     u.preventDefault();
     if (truePrenom === "true" && trueNom === "true" && trueAddress === "true" && trueCity === "true" && trueEmail === "true") {
       console.log("FORMULAIRE ENVOYé");
-      /* dans ce cas poster */
       let inputName = document.getElementById('firstName');
       let inputLastName = document.getElementById('lastName');
       let inputAdress = document.getElementById('address');
       let inputCity = document.getElementById('city');
       let inputMail = document.getElementById('email');
 
-      //Construction d'un array depuis le local storage
+      /* Construction d'un array depuis le local storage */
+      
       let idProducts = [];
       for (let i = 0; i<allBasketJson.length;i++) {
           idProducts.push(allBasketJson[i].itemNum);
@@ -249,8 +256,8 @@ fetch("http://localhost:3000/api/products")
       .then((response) => response.json())
       .then((data) => {
           console.log(data);
-          
-          localStorage.setItem("orderId", "154885856135835538355");
+          date2 = Date.now();
+          localStorage.setItem("orderId", JSON.stringify(totalPrice + date2));
 
           document.location.href = "confirmation.html";
       })

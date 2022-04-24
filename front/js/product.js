@@ -8,7 +8,7 @@ if(search_params.has('id')) {
   console.log("Id is " + id);
 }
 else {
-  console.log("unable to reach the product id in URL");
+  alert("unable to reach the product id in URL");
 };
 
 fetch("http://localhost:3000/api/products")
@@ -67,7 +67,7 @@ fetch("http://localhost:3000/api/products")
       const itemChoosen = JSON.stringify(itemChoosenJson);
       localStorage.setItem("lastBuy", itemChoosen);
 
-      /* On parcourt le tableau et pour verifier si l'objet a ajouter au panier eciste deja dans celui ci ou doit etre creer */
+      /* On parcourt le tableau pour verifier si l'objet à ajouter au panier existe deja dans celui ci ou s'il doit etre creer */
 
       existingBasket.forEach(function (objs, i) {
         obj = JSON.parse(objs);
