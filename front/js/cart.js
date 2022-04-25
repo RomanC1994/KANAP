@@ -154,7 +154,7 @@ fetch("http://localhost:3000/api/products")
 
   firstName.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
-    if (/^\D\S*$/.test(inputText.target.value)) {
+    if (/^[a-zA-Z]+$/.test(inputText.target.value)) {
       document.getElementById("firstNameErrorMsg").innerHTML = "Le prenom inseré est valide";
       truePrenom = "true";
     }
@@ -166,7 +166,7 @@ fetch("http://localhost:3000/api/products")
   let lastName = document.getElementById("lastName");
   lastName.addEventListener("input", function(inputText) {
     console.log(inputText.target.value);
-    if (/^\D\S*$/.test(inputText.target.value)) {
+    if (/^[a-zA-Z]+$/.test(inputText.target.value)) {
       document.getElementById("lastNameErrorMsg").innerHTML = "Le nom inseré est valide";
       trueNom = "true";
     }
@@ -227,7 +227,7 @@ fetch("http://localhost:3000/api/products")
       /* Construction d'un array depuis le local storage */
       
       let idProducts = [];
-      for (let i = 0; i<allBasketJson.length;i++) {
+      for (let i in allBasketJson) {
           idProducts.push(allBasketJson[i].itemNum);
       }
       console.log(idProducts);
